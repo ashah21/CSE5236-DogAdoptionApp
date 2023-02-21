@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "354162613031",
+    "project_id": "dog-adoption-app-9cc4a",
+    "storage_bucket": "dog-adoption-app-9cc4a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354162613031:android:b1751a1634fa39f0422702",
+        "android_client_info": {
+          "package_name": "com.example.dog_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354162613031-l6ibptle32v6rovvt6di74o46pf91bsd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk5hvyJetOqCUCAQELmEH-zRhmAz5Mu5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354162613031-l6ibptle32v6rovvt6di74o46pf91bsd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
