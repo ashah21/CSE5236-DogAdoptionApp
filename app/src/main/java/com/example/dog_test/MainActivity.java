@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //This makes sure that the app will open to the Home Fragment
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        //This switch-case is based on the button the user clicks from the navigation menu
         switch(item.getItemId())
         {
             case R.id.home:
