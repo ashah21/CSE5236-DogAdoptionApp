@@ -19,12 +19,18 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword, mUserName;
     Button buttonReg;
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private User user;
+
     ProgressBar progressBar;
     TextView textView;
 
@@ -39,6 +45,27 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    private void insertUserData(){
+        String email = editTextEmail.getText().toString();
+        String name = mUserName.getText().toString();
+        String password = editTextPassword.getText().toString();
+
+        User users = new User(email, name, password);
+        databaseReference.push().setValue(users);
+        Toast.makeText(Register.this, "Data inserted to db", Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateDb(FirebaseUser currentUser){
+        if(user != null){
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference();
+
+            String uid = currentUser.getUid();
+            DatabaseReference userRef = databaseReference.child("User");
+            insertUserData();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +73,7 @@ public class Register extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        mUserName = findViewById(R.id.user_name);
         buttonReg = findViewById(R.id.btn_register);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
@@ -62,10 +90,15 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String email, password;
+                String email, password, userName;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
+                userName = String.valueOf(mUserName.getText());
 
+                if(TextUtils.isEmpty((userName))){
+                    Toast.makeText(Register.this, "Enter name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (TextUtils.isEmpty(email)){
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return;
@@ -84,6 +117,9 @@ public class Register extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Register.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
+
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    updateDb(user);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(Register.this, "Authentication failed.",
