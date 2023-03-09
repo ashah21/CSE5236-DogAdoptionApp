@@ -27,7 +27,7 @@ public class Register extends AppCompatActivity {
     TextInputEditText editTextEmail, editTextPassword, mUserName;
     Button buttonReg;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase firebaseDatabase;
+    private FirebaseDatabase rootNode;
     private DatabaseReference databaseReference;
     private User user;
 
@@ -45,24 +45,27 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    private void insertUserData(){
+    private void insertUserData(FirebaseUser currentUser){
+        // get all the values
+        // I added the currentUser var
         String email = editTextEmail.getText().toString();
         String name = mUserName.getText().toString();
         String password = editTextPassword.getText().toString();
 
         User users = new User(email, name, password);
-        databaseReference.push().setValue(users);
+        databaseReference.child(currentUser.getUid()).setValue(users);
         Toast.makeText(Register.this, "Data inserted to db", Toast.LENGTH_SHORT).show();
     }
 
     private void updateDb(FirebaseUser currentUser){
         if(user != null){
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            databaseReference = firebaseDatabase.getReference();
+            rootNode = FirebaseDatabase.getInstance();
+            databaseReference = rootNode.getReference("User");
+//            databaseReference.setValue("First data storage");
 
             String uid = currentUser.getUid();
             DatabaseReference userRef = databaseReference.child("User");
-            insertUserData();
+//            insertUserData();
         }
     }
 
@@ -95,9 +98,9 @@ public class Register extends AppCompatActivity {
                 password = String.valueOf(editTextPassword.getText());
                 userName = String.valueOf(mUserName.getText());
 
-                firebaseDatabase = FirebaseDatabase.getInstance();
-                databaseReference = firebaseDatabase.getReference("User");
-                databaseReference.setValue("First data storage");
+//                rootNode = FirebaseDatabase.getInstance();
+//                databaseReference = rootNode.getReference("User");
+//                databaseReference.setValue("First data storage");
 
 
                 if(TextUtils.isEmpty((userName))){
@@ -113,6 +116,13 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
+                // adding the user into the db when they register
+                rootNode = FirebaseDatabase.getInstance();
+                databaseReference = rootNode.getReference("User");
+                FirebaseUser user = mAuth.getCurrentUser();
+                insertUserData(user);
+//                databaseReference.setValue("First data storage");         // test to see if it's writing to db
+
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -122,8 +132,8 @@ public class Register extends AppCompatActivity {
                                     Toast.makeText(Register.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
 
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    updateDb(user);
+//                                    FirebaseUser user = mAuth.getCurrentUser();
+//                                    updateDb(user);
 
 
                                 } else {

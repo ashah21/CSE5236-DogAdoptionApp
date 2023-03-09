@@ -65,6 +65,10 @@ public class Login extends AppCompatActivity {
         Log.d(TAG, "onResume() called");
     }
 
+    public void loginUser(){
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
