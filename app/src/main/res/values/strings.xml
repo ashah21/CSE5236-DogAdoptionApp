@@ -30,4 +30,19 @@
     <string name="Menu">Menu</string>
     <string name="main_activity_header">Main Activity Header</string>
     <string name="Logout">Logout</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="change_passowrd">Change Password</string>
+    <string name="title_activity_password_change">PasswordChangeActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm New Password</string>
+    <string name="submit">Submit</string>
 </resources>

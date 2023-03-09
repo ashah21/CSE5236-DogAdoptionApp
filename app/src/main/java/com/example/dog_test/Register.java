@@ -95,6 +95,11 @@ public class Register extends AppCompatActivity {
                 password = String.valueOf(editTextPassword.getText());
                 userName = String.valueOf(mUserName.getText());
 
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                databaseReference = firebaseDatabase.getReference("User");
+                databaseReference.setValue("First data storage");
+
+
                 if(TextUtils.isEmpty((userName))){
                     Toast.makeText(Register.this, "Enter name", Toast.LENGTH_SHORT).show();
                     return;
@@ -103,7 +108,6 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (TextUtils.isEmpty(password)){
                     Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
                     return;
@@ -120,6 +124,8 @@ public class Register extends AppCompatActivity {
 
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     updateDb(user);
+
+
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(Register.this, "Authentication failed.",
