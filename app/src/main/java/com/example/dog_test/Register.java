@@ -34,6 +34,18 @@ public class Register extends AppCompatActivity {
     ProgressBar progressBar;
     TextView textView;
 
+    private void insertDb(String uid,User users){
+
+        // gets an instance and reference to the db
+        rootNode = FirebaseDatabase.getInstance();
+        databaseReference = rootNode.getReference();
+
+        // set the reference to the child "users" to store user data (users -> uid(s) -> userData)
+        DatabaseReference userRef = databaseReference.child("users");
+        userRef.child(uid).setValue(users);         // each user data is the child of the uid
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -89,15 +101,15 @@ public class Register extends AppCompatActivity {
 
                 // adding the user into the db when they register
 
-                rootNode = FirebaseDatabase.getInstance();
-                databaseReference = rootNode.getReference("Users");
-
-                String emailTest = editTextEmail.getText().toString();
-                String name = mUserName.getText().toString();
-                String passwordTest = editTextPassword.getText().toString();
-
-                User users = new User(name, emailTest, passwordTest);
-                databaseReference.setValue(users);
+//                rootNode = FirebaseDatabase.getInstance();
+//                databaseReference = rootNode.getReference("Users");
+//
+//                String emailTest = editTextEmail.getText().toString();
+//                String name = mUserName.getText().toString();
+//                String passwordTest = editTextPassword.getText().toString();
+//
+//                User users = new User(name, emailTest, passwordTest);
+//                databaseReference.setValue(users);
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -107,6 +119,15 @@ public class Register extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Register.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
+
+                                    String emailTest = editTextEmail.getText().toString();
+                                    String name = mUserName.getText().toString();
+                                    String passwordTest = editTextPassword.getText().toString();
+                                    String uid = mAuth.getCurrentUser().getUid();
+
+                                    User users = new User(name, emailTest, passwordTest, uid);
+                                    insertDb(uid, users);
+
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(Register.this, "Authentication failed.",
