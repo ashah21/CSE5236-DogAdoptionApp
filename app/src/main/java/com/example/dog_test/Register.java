@@ -45,30 +45,6 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    private void insertUserData(FirebaseUser currentUser){
-        // get all the values
-        // I added the currentUser var
-        String email = editTextEmail.getText().toString();
-        String name = mUserName.getText().toString();
-        String password = editTextPassword.getText().toString();
-
-        User users = new User(email, name, password);
-        databaseReference.child(currentUser.getUid()).setValue(users);
-        Toast.makeText(Register.this, "Data inserted to db", Toast.LENGTH_SHORT).show();
-    }
-
-    private void updateDb(FirebaseUser currentUser){
-        if(user != null){
-            rootNode = FirebaseDatabase.getInstance();
-            databaseReference = rootNode.getReference("User");
-//            databaseReference.setValue("First data storage");
-
-            String uid = currentUser.getUid();
-            DatabaseReference userRef = databaseReference.child("User");
-//            insertUserData();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,11 +74,6 @@ public class Register extends AppCompatActivity {
                 password = String.valueOf(editTextPassword.getText());
                 userName = String.valueOf(mUserName.getText());
 
-//                rootNode = FirebaseDatabase.getInstance();
-//                databaseReference = rootNode.getReference("User");
-//                databaseReference.setValue("First data storage");
-
-
                 if(TextUtils.isEmpty((userName))){
                     Toast.makeText(Register.this, "Enter name", Toast.LENGTH_SHORT).show();
                     return;
@@ -117,11 +88,16 @@ public class Register extends AppCompatActivity {
                 }
 
                 // adding the user into the db when they register
+
                 rootNode = FirebaseDatabase.getInstance();
-                databaseReference = rootNode.getReference("User");
-                FirebaseUser user = mAuth.getCurrentUser();
-                insertUserData(user);
-//                databaseReference.setValue("First data storage");         // test to see if it's writing to db
+                databaseReference = rootNode.getReference("Users");
+
+                String emailTest = editTextEmail.getText().toString();
+                String name = mUserName.getText().toString();
+                String passwordTest = editTextPassword.getText().toString();
+
+                User users = new User(name, emailTest, passwordTest);
+                databaseReference.setValue(users);
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -131,11 +107,6 @@ public class Register extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Register.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
-
-//                                    FirebaseUser user = mAuth.getCurrentUser();
-//                                    updateDb(user);
-
-
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(Register.this, "Authentication failed.",

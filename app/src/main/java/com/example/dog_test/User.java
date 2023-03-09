@@ -1,6 +1,7 @@
 package com.example.dog_test;
 
 public class User {
+
     public String name;
     public String email;
     public String password;
