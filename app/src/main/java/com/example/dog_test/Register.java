@@ -99,17 +99,6 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                // adding the user into the db when they register
-
-//                rootNode = FirebaseDatabase.getInstance();
-//                databaseReference = rootNode.getReference("Users");
-//
-//                String emailTest = editTextEmail.getText().toString();
-//                String name = mUserName.getText().toString();
-//                String passwordTest = editTextPassword.getText().toString();
-//
-//                User users = new User(name, emailTest, passwordTest);
-//                databaseReference.setValue(users);
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -120,6 +109,7 @@ public class Register extends AppCompatActivity {
                                     Toast.makeText(Register.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
 
+                                    // adds user to the db
                                     String emailTest = editTextEmail.getText().toString();
                                     String name = mUserName.getText().toString();
                                     String passwordTest = editTextPassword.getText().toString();
