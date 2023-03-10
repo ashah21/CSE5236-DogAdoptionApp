@@ -17,12 +17,14 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
     FirebaseUser user;
 
-    TextInputEditText currentPasswordInput, newPasswordInput, confirmNewPassowordInput;
+    TextInputEditText currentPasswordInput, newPasswordInput, confirmNewPasswordInput;
 
     Button submitNewPassword;
 
@@ -32,7 +34,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_password);
         currentPasswordInput = findViewById(R.id.current_password);
         newPasswordInput = findViewById(R.id.new_password);
-        confirmNewPassowordInput = findViewById(R.id.confirm_password);
+        confirmNewPasswordInput = findViewById(R.id.confirm_password);
         submitNewPassword = findViewById(R.id.btn_submit);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -48,7 +50,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String currentPassword = String.valueOf(currentPasswordInput.getText());
                 String newPassword = String.valueOf(newPasswordInput.getText());
-                String confirmNewPassword = String.valueOf(confirmNewPassowordInput.getText());
+                String confirmNewPassword = String.valueOf(confirmNewPasswordInput.getText());
 
                 if (TextUtils.isEmpty((currentPassword)) || TextUtils.isEmpty((newPassword))
                         || TextUtils.isEmpty((confirmNewPassword))) {
@@ -70,6 +72,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+
                             user.updatePassword(newPassword).addOnCompleteListener(
                                     new OnCompleteListener<Void>() {
                                 @Override
@@ -78,6 +81,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(),
                                                 "Password updated.",
                                                 Toast.LENGTH_SHORT).show();
+
+                                        //Updates users password in RealTime DB
+                                        String userId = user.getUid();
+                                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+                                        reference.child(userId).child("password").setValue(newPassword);
 
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         startActivity(intent);
