@@ -1,4 +1,4 @@
-package com.example.dog_test;
+package com.example.dog_test.ui.activity;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.dog_test.R;
+import com.example.dog_test.ui.fragment.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         user = auth.getCurrentUser();
 
         if(user == null){
-            Intent intent = new Intent(getApplicationContext(), Login.class);
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -83,11 +85,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.settings:
                 toolbarTitle.setText("Settings");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SettingsFragment()).commit();
+                        new com.example.dog_test.SettingsFragment()).commit();
                 break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Login.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
                 break;
