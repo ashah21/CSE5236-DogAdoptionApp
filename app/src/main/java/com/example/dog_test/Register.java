@@ -19,14 +19,32 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword, mUserName;
     Button buttonReg;
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase rootNode;
+    private DatabaseReference databaseReference;
+    private User user;
+
     ProgressBar progressBar;
     TextView textView;
+
+    private void insertDb(String uid,User users){
+
+        // gets an instance and reference to the db
+        rootNode = FirebaseDatabase.getInstance();
+        databaseReference = rootNode.getReference();
+
+        // set the reference to the child "users" to store user data (users -> uid(s) -> userData)
+        DatabaseReference userRef = databaseReference.child("users");
+        userRef.child(uid).setValue(users);         // each user data is the child of the uid
+
+    }
 
     @Override
     public void onStart() {
@@ -46,6 +64,7 @@ public class Register extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        mUserName = findViewById(R.id.user_name);
         buttonReg = findViewById(R.id.btn_register);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
@@ -62,19 +81,24 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String email, password;
+                String email, password, userName;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
+                userName = String.valueOf(mUserName.getText());
 
+                if(TextUtils.isEmpty((userName))){
+                    Toast.makeText(Register.this, "Enter name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (TextUtils.isEmpty(email)){
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (TextUtils.isEmpty(password)){
                     Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -84,6 +108,16 @@ public class Register extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Register.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
+
+                                    // adds user to the db
+                                    String emailTest = editTextEmail.getText().toString();
+                                    String name = mUserName.getText().toString();
+                                    String passwordTest = editTextPassword.getText().toString();
+                                    String uid = mAuth.getCurrentUser().getUid();
+
+                                    User users = new User(name, emailTest, passwordTest, uid);
+                                    insertDb(uid, users);
+
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(Register.this, "Authentication failed.",
