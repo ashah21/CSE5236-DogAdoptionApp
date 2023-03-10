@@ -17,6 +17,12 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class DeleteAccountActivity extends AppCompatActivity {
 
@@ -60,6 +66,12 @@ public class DeleteAccountActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+
+                            // these lines delete the user from the real-time db
+                            String userId = user.getUid();
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+                            reference.child(userId).removeValue();
+
                             user.delete()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
