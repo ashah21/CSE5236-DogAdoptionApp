@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
 
+    TextView toolbarTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarTitle.setText("Home");
 
         slideMenuLayout = findViewById(R.id.slide_menu);
         NavigationView navigationView = findViewById(R.id.navigationView);
@@ -56,16 +61,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         auth = FirebaseAuth.getInstance();
-        textView = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
 
         if(user == null){
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
-        }
-        else{
-            textView.setText(user.getEmail());
         }
     }
 
@@ -75,10 +76,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch(item.getItemId())
         {
             case R.id.home:
+                toolbarTitle.setText("Home");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new HomeFragment()).commit();
                 break;
             case R.id.settings:
+                toolbarTitle.setText("Settings");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new SettingsFragment()).commit();
                 break;
