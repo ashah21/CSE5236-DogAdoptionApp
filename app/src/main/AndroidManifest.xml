@@ -19,11 +19,11 @@
             android:label="@string/title_activity_password_change"
             android:theme="@style/Theme.Dogtest.NoActionBar" />
         <activity
-            android:name=".ui.activity.Register"
+            android:name=".ui.activity.RegisterActivity"
             android:exported="false"
             android:theme="@style/Theme.Material3.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.Login"
+            android:name=".ui.activity.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Material3.Light.NoActionBar">
             <intent-filter>
