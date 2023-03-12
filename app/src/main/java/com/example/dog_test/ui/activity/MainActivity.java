@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.settings:
                 toolbarTitle.setText("Settings");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new com.example.dog_test.SettingsFragment()).commit();
+                        new com.example.dog_test.ui.fragment.SettingsFragment()).commit();
                 break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
