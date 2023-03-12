@@ -1,4 +1,4 @@
-package com.example.dog_test;
+package com.example.dog_test.model;
 
 public class User {
 
