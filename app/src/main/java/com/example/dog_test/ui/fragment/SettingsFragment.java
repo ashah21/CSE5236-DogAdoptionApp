@@ -47,8 +47,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                         new ChangePasswordFragment()).commit();
                 break;
             case R.id.btn_delete_account:
-                Intent myIntent2 = new Intent(getActivity(), DeleteAccountActivity.class);
-                getActivity().startActivity(myIntent2);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new DeleteAccountFragment()).commit();
                 break;
         }
     }
