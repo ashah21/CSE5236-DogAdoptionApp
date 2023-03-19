@@ -25,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 public class HomeFragment extends Fragment {
 
     View view;
+    ViewGroup placeholder;
+    LayoutInflater inflater;
+    ViewGroup container;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -33,14 +36,17 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home, container, false);
+        this.inflater = inflater;
+        this.container = container;
+
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        placeholder = (ViewGroup) view;
         setUserView();
-        return view;
+
+        return placeholder;
     }
 
     public void setUserView(){
-        TextView textView = view.findViewById(R.id.userType);
-
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user == null){
@@ -63,11 +69,15 @@ public class HomeFragment extends Fragment {
 
                         if(userType.matches("true"))
                         {
-                            textView.setText("Shelter View");
+                            View shelter = inflater.inflate(R.layout.fragment_home_shelter, container, false);
+                            placeholder.removeAllViews();
+                            placeholder.addView(shelter);
                         }
                         else
                         {
-                            textView.setText("Adopter View");
+                            View adopter = inflater.inflate(R.layout.fragment_home_adopter, container, false);
+                            placeholder.removeAllViews();
+                            placeholder.addView(adopter);
                         }
 
                     }

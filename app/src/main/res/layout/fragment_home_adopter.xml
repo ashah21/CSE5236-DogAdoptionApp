@@ -5,4 +5,11 @@
     android:orientation="vertical"
     android:padding="2pt">
 
+
+    <TextView
+        android:id="@+id/userType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Adopter View" />
 </LinearLayout>
