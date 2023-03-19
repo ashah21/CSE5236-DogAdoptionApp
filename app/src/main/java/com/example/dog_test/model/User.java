@@ -5,17 +5,15 @@ public class User {
     public String name;
     public String email;
     public String password;
+    public boolean isShelter;
 
     public String userId;
 
-    public User(){
-
-    }
-
-    public User(String name, String email, String password, String userId){
+    public User(String name, String email, String password, boolean isShelter, String userId){
         this.name = name;
         this.email = email;
         this.password = password;
+        this.isShelter = isShelter;
         this.userId = userId;
     }
 
@@ -28,6 +26,7 @@ public class User {
         this.name = name;
     }
 
+    //Do we need these methods? Look into deleting them as possible refactor
     public String getEmail() {
         return email;
     }
