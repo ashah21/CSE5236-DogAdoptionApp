@@ -24,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class HomeFragment extends Fragment {
 
-    View view;
     ViewGroup placeholder;
     LayoutInflater inflater;
     ViewGroup container;

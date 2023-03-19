@@ -6,14 +6,22 @@
         <item
             android:id="@+id/home"
             android:icon="@drawable/baseline_home_24"
-            android:title="@string/Home" />
+            android:title="@string/Home"
+            android:visible="true"/>
+        <item
+            android:id="@+id/addDog"
+            android:icon="@drawable/baseline_add_24"
+            android:title="@string/add_new_dog"
+            android:visible="false"/>
         <item
             android:id="@+id/settings"
             android:icon="@drawable/baseline_settings_24"
-            android:title="@string/Settings" />
+            android:title="@string/Settings"
+            android:visible="true"/>
         <item
             android:id="@+id/logout"
             android:icon="@drawable/baseline_logout_24"
-            android:title="@string/Logout" />
+            android:title="@string/Logout"
+            android:visible="true"/>
     </group>
 </menu>
