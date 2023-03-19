@@ -14,9 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.dog_test.R;
 import com.example.dog_test.model.Dog;
-import com.example.dog_test.ui.activity.RegisterActivity;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,13 +42,12 @@ public class AddDogFragment extends Fragment {
         dogNameInput = view.findViewById(R.id.dog_name);
         addNewDog = view.findViewById(R.id.btn_submit);
 
-        dog = new Dog();
-
         addNewDog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String dogName = String.valueOf(dogNameInput.getText());
                 dogID = databaseReference.push().getKey();
+                dog = new Dog();
 
                 if(TextUtils.isEmpty((dogName))){
                     Toast.makeText(getActivity().getApplicationContext(), "Enter name", Toast.LENGTH_SHORT).show();
@@ -60,8 +57,6 @@ public class AddDogFragment extends Fragment {
                 {
                     addDatatoFirebase(dogName);
                 }
-
-
             }
         });
 
