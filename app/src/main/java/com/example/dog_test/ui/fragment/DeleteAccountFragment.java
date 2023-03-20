@@ -1,16 +1,21 @@
-package com.example.dog_test.ui.activity;
+package com.example.dog_test.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.dog_test.R;
+import com.example.dog_test.ui.activity.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -21,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class DeleteAccountActivity extends AppCompatActivity {
+public class DeleteAccountFragment extends Fragment {
 
     TextInputEditText currentPasswordInput;
 
@@ -29,19 +34,21 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
     FirebaseUser user;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delete_account);
-        currentPasswordInput = findViewById(R.id.current_password);
-        deleteAccountButton = findViewById(R.id.btn_submit);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_delete_account, container, false);
+
+        currentPasswordInput = view.findViewById(R.id.current_password);
+        deleteAccountButton = view.findViewById(R.id.btn_submit);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user == null){
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            Intent intent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
             startActivity(intent);
-            finish();
+            getActivity().finish();
         }
 
         deleteAccountButton.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +58,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                 String currentPassword = String.valueOf(currentPasswordInput.getText());
 
                 if (TextUtils.isEmpty((currentPassword))) {
-                    Toast.makeText(getApplicationContext(), "Please fill out the field above.",
+                    Toast.makeText(getActivity().getApplicationContext(), "Please fill out the field above.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -70,25 +77,25 @@ public class DeleteAccountActivity extends AppCompatActivity {
                             reference.child(userId).removeValue();
 
                             user.delete()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(getApplicationContext(),
-                                                    "Deleted User Successfully.",
-                                                    Toast.LENGTH_LONG).show();
-                                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                                            finish();
-                                        } else {
-                                            Toast.makeText(getApplicationContext(),
-                                                    "Error: Account not deleted.",
-                                                    Toast.LENGTH_SHORT).show();
-                                            return;
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(getActivity().getApplicationContext(),
+                                                        "Deleted User Successfully.",
+                                                        Toast.LENGTH_LONG).show();
+                                                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
+                                                getActivity().finish();
+                                            } else {
+                                                Toast.makeText(getActivity().getApplicationContext(),
+                                                        "Error: Account not deleted.",
+                                                        Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
                                         }
-                                    }
-                            });
+                                    });
                         } else {
-                            Toast.makeText(getApplicationContext(),
+                            Toast.makeText(getActivity().getApplicationContext(),
                                     "Password was incorrect.",
                                     Toast.LENGTH_SHORT).show();
                             return;
@@ -97,5 +104,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                 });
             }
         });
+
+        return view;
     }
 }
