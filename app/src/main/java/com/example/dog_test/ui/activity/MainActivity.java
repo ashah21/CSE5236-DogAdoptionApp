@@ -10,15 +10,23 @@ import android.view.MenuItem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dog_test.R;
+import com.example.dog_test.ui.fragment.AddDogFragment;
 import com.example.dog_test.ui.fragment.SettingsFragment;
 import com.example.dog_test.ui.fragment.HomeFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,10 +34,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Button button;
     TextView textView;
     FirebaseUser user;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    String userType = "false";
 
     DrawerLayout slideMenuLayout;
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
+    NavigationView navigationView;
 
     TextView toolbarTitle;
 
@@ -45,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbarTitle.setText("Home");
 
         slideMenuLayout = findViewById(R.id.slide_menu);
-        NavigationView navigationView = findViewById(R.id.navigationView);
+        navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
         toggle = new ActionBarDrawerToggle(this, slideMenuLayout, R.string.open, R.string.close);
@@ -69,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             finish();
         }
+
+        setDrawerMenu();
     }
 
     @Override
@@ -80,6 +94,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbarTitle.setText("Home");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new HomeFragment()).commit();
+                break;
+            case R.id.addDog:
+                toolbarTitle.setText("Add New Dog");
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new AddDogFragment()).commit();
                 break;
             case R.id.settings:
                 toolbarTitle.setText("Settings");
@@ -104,5 +123,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setDrawerMenu()
+    {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+        databaseReference.child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    if(task.getResult().exists())
+                    {
+                        DataSnapshot userSnapshot = task.getResult();
+                        userType = String.valueOf(userSnapshot.child("isShelter").getValue());
+                        if(userType.matches("true"))
+                        {
+                            navigationView.getMenu().findItem(R.id.addDog).setVisible(true);
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(),
+                                "User does not exist",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),
+                            "Failed to read data",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

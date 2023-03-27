@@ -29,9 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class DeleteAccountFragment extends Fragment {
 
     TextInputEditText currentPasswordInput;
-
     Button deleteAccountButton;
-
     FirebaseUser user;
 
     @Nullable

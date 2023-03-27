@@ -15,8 +15,6 @@ import com.example.dog_test.R;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "SettingsActivity";
-
     Button changePassword;
 
     Button deleteAccount;
@@ -25,7 +23,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        Log.d(TAG, "onCreateView() called");
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         changePassword = (Button) view.findViewById(R.id.btn_change_password);

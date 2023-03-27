@@ -45,4 +45,7 @@
     <string name="new_password">New Password</string>
     <string name="confirm_password">Confirm New Password</string>
     <string name="submit">Submit</string>
+    <string name="add_new_dog">Add New Dog</string>
+    <string name="add_dog">Add Dog</string>
+    <string name="dog_name">Name</string>
 </resources>
