@@ -23,7 +23,8 @@ public class User {
         this.isShelter = isShelter;
         this.userId = userId;
         this.dogIds = new ArrayList<>();
-        this.userId = userImage;
+        this.userId = userId;
+        this.userImage = userImage;
     }
 
     public String getName() {

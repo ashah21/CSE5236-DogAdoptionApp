@@ -11,14 +11,15 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+
     <ImageView
         android:id="@+id/user_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:textStyle="bold"
         android:gravity="center"
-        tools:src="@tools:sample/avatars" />
+        android:textStyle="bold"
+        android:src="@android:drawable/sym_def_app_icon" />
 
     <Button
         android:id="@+id/btn_upload_image"
@@ -35,6 +36,12 @@
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:text="Camera" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

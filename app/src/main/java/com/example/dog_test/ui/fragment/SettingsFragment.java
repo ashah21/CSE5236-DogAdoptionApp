@@ -34,6 +34,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         deleteAccount.setOnClickListener(this);
 
         userProfile = (Button) view.findViewById(R.id.btn_user_profile);
+        userProfile.setOnClickListener(this);
 
         return view;
     }
