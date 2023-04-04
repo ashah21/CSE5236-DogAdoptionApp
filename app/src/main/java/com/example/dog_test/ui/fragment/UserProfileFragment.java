@@ -104,15 +104,9 @@ public class UserProfileFragment extends Fragment{
         return view;
     }
 
-//    private void choosePicture() {
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(intent, 1);
-//    }
-//
-//    @Override
-    protected void onActivityForResult(int requestCode, int resultCode, @Nullable Intent data){
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1000) {
                 Uri returnUri = data.getData();
