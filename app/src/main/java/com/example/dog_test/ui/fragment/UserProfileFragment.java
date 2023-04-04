@@ -78,7 +78,8 @@ public class UserProfileFragment extends Fragment{
 //            getActivity().finish();
 //        }
 
-        btnUploadImage.setOnClickListener(new View.OnClickListener() {
+
+        profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -89,15 +90,10 @@ public class UserProfileFragment extends Fragment{
             }
         });
 
-        profilePic.setOnClickListener(new View.OnClickListener() {
-
+        btnUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent photoIntent = new Intent(Intent.ACTION_PICK);
-                photoIntent.setType("image/*");
-                startActivityForResult(photoIntent, 1);
-
-//                choosePicture();
+                uploadImage();
             }
         });
 
@@ -111,8 +107,8 @@ public class UserProfileFragment extends Fragment{
 //        startActivityForResult(intent, 1);
 //    }
 //
-//    @Override
-    protected void onActivityForResult(int requestCode, int resultCode, @Nullable Intent data){
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1000) {
                 Uri returnUri = data.getData();

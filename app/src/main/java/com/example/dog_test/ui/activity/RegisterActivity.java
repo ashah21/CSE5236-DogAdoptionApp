@@ -119,10 +119,10 @@ public class RegisterActivity extends AppCompatActivity {
                                     String name = mUserName.getText().toString();
                                     String passwordTest = editTextPassword.getText().toString();
                                     String uid = mAuth.getCurrentUser().getUid();
-                                    String userImage = "/image";
+                                    String userImage = "";
 
                                     User users = new User(name, emailTest, passwordTest,
-                                            isShelterBox.isChecked(), uid, userImage);
+                                            isShelterBox.isChecked(), uid, "");
                                     insertDb(uid, users);
 
                                 } else {
