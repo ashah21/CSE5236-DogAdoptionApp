@@ -96,13 +96,13 @@ public class HomeFragment extends Fragment {
         Dog newDog = new Dog();
 
         newDog.setName(String.valueOf(snapshot.child("name").getValue()));
-        newDog.setAge((Integer) snapshot.child("age").getValue());
+        newDog.setAge(Integer.parseInt(String.valueOf(snapshot.child("age").getValue())));
         newDog.setBreed(String.valueOf(snapshot.child("breed").getValue()));
-        newDog.setWeight((Integer) snapshot.child("weight").getValue());
+        newDog.setWeight(Integer.parseInt(String.valueOf(snapshot.child("weight").getValue())));
         newDog.setImageUrl(String.valueOf(snapshot.child("imageUrl").getValue()));
-        newDog.setIsAdopted((Boolean) snapshot.child("isAdopted").getValue());
-        newDog.setIsSterilized((Boolean) snapshot.child("isSterilized").getValue());
-        newDog.setIsVaccinated((Boolean) snapshot.child("isVaccinated").getValue());
+        newDog.setIsAdopted(Boolean.getBoolean(String.valueOf(snapshot.child("isAdopted").getValue())));
+        newDog.setIsSterilized(Boolean.getBoolean(String.valueOf(snapshot.child("isSterilized").getValue())));
+        newDog.setIsVaccinated(Boolean.getBoolean(String.valueOf(snapshot.child("isVaccinated").getValue())));
         newDog.setBio(String.valueOf(snapshot.child("bio").getValue()));
 
         System.out.println("DOG NAME: " + newDog.getName());
