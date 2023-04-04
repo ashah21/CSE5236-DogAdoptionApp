@@ -19,12 +19,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -37,6 +41,7 @@ public class HomeFragment extends Fragment {
     
     DatabaseReference dogRef;
     String userType;
+    List dogList;
 
 
     @Nullable
@@ -47,6 +52,7 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         placeholder = (ViewGroup) view;
+        dogList = new ArrayList();
         setUserView();
         getDogInfo();
 
@@ -57,8 +63,7 @@ public class HomeFragment extends Fragment {
     public void getDogInfo() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         dogRef = firebaseDatabase.getReference("dogs");
-        System.out.println("dkaakakakdk");
-        dogRef.addValueEventListener(new ValueEventListener() {
+       /* dogRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -70,7 +75,42 @@ public class HomeFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
+        });*/
+
+        dogRef.orderByKey().addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                System.out.println("NEW KEY!!!!: " + snapshot.getKey());
+                addNewDog(snapshot);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
+    }
+
+    public void addNewDog(DataSnapshot snapshot) {
+        Dog newDog = new Dog();
+        newDog.setName(dogRef.child(snapshot.getKey()).child("name").toString());
+        dogList.add(newDog);
+        System.out.println("DOG ADDED: " + snapshot.getKey());
     }
 
 
