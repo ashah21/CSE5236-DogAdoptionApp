@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
     DatabaseReference dogRef;
     String userType;
     List dogList;
+    Boolean isShelter;
 
 
     @Nullable
@@ -55,9 +56,7 @@ public class HomeFragment extends Fragment {
         dogList = new ArrayList();
         setUserView();
         getDogInfo();
-        setCardOneInfo();
 
-        System.out.println("DOG LIST SIZE: " + dogList.size());
         return placeholder;
     }
 
@@ -107,8 +106,6 @@ public class HomeFragment extends Fragment {
         newDog.setIsVaccinated(Boolean.getBoolean(String.valueOf(snapshot.child("isVaccinated").getValue())));
         newDog.setBio(String.valueOf(snapshot.child("bio").getValue()));
 
-        System.out.println("DOG NAME: " + newDog.getName());
-
         dogList.add(newDog);
     }
 
@@ -143,15 +140,19 @@ public class HomeFragment extends Fragment {
 
                         if(userType.matches("true"))
                         {
+                            isShelter = true;
                             View shelter = inflater.inflate(R.layout.fragment_home_shelter, container, false);
                             placeholder.removeAllViews();
                             placeholder.addView(shelter);
                         }
                         else
                         {
+                            isShelter = false;
                             View adopter = inflater.inflate(R.layout.fragment_home_adopter, container, false);
                             placeholder.removeAllViews();
                             placeholder.addView(adopter);
+
+                            setCardOneInfo();
                         }
 
                     }
