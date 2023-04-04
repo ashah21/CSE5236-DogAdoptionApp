@@ -6,6 +6,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import android.view.MenuItem;
 
 import android.content.Intent;

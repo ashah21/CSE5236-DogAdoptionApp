@@ -32,6 +32,7 @@ public class HomeFragment extends Fragment {
     DatabaseReference databaseReference;
     String userType;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment {
 
         return placeholder;
     }
+
 
     public void setUserView(){
         user = FirebaseAuth.getInstance().getCurrentUser();
