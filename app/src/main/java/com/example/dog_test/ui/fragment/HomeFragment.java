@@ -42,7 +42,6 @@ public class HomeFragment extends Fragment {
     DatabaseReference dogRef;
     String userType;
     List dogList;
-    Boolean isShelter;
 
 
     @Nullable
@@ -109,6 +108,13 @@ public class HomeFragment extends Fragment {
         dogList.add(newDog);
     }
 
+    public void setCardOneInfo(){
+        TextView dogName = (TextView) getActivity().findViewById(R.id.dogOneName);
+        int randomDogIndex = (int)(Math.random() * dogList.size());
+        Dog cardOneDog = (Dog) dogList.get(randomDogIndex);
+        dogName.setText(cardOneDog.getName());
+    }
+
 
     public void setUserView(){
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -133,14 +139,12 @@ public class HomeFragment extends Fragment {
 
                         if(userType.matches("true"))
                         {
-                            isShelter = true;
                             View shelter = inflater.inflate(R.layout.fragment_home_shelter, container, false);
                             placeholder.removeAllViews();
                             placeholder.addView(shelter);
                         }
                         else
                         {
-                            isShelter = false;
                             View adopter = inflater.inflate(R.layout.fragment_home_adopter, container, false);
                             placeholder.removeAllViews();
                             placeholder.addView(adopter);

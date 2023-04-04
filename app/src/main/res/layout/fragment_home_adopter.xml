@@ -50,5 +50,18 @@
         app:layout_constraintEnd_toEndOf="@id/cardOne"
         app:layout_constraintStart_toStartOf="@id/cardOne" />
 
+    <TextView
+        android:id="@+id/dogOneName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Insert Dog Name"
+        android:layout_marginBottom="60dp"
+        android:textColor="@android:color/white"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/cardOne"
+        app:layout_constraintEnd_toEndOf="@id/cardOne"
+        app:layout_constraintStart_toStartOf="@id/cardOne" />
+
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
