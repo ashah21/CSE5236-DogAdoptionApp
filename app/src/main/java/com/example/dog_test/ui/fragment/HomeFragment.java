@@ -109,13 +109,6 @@ public class HomeFragment extends Fragment {
         dogList.add(newDog);
     }
 
-    public void setCardOneInfo(){
-        TextView dogName = (TextView) getActivity().findViewById(R.id.dogOneName);
-        int randomDogIndex = (int)(Math.random() * dogList.size());
-        Dog cardOneDog = (Dog) dogList.get(randomDogIndex);
-        dogName.setText(cardOneDog.getName());
-    }
-
 
     public void setUserView(){
         user = FirebaseAuth.getInstance().getCurrentUser();
