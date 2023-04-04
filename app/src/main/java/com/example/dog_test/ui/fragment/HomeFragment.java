@@ -105,9 +105,14 @@ public class HomeFragment extends Fragment {
         newDog.setIsVaccinated(Boolean.getBoolean(String.valueOf(snapshot.child("isVaccinated").getValue())));
         newDog.setBio(String.valueOf(snapshot.child("bio").getValue()));
 
-        System.out.println("DOG NAME: " + newDog.getName());
-
         dogList.add(newDog);
+    }
+
+    public void setCardOneInfo(){
+        TextView dogName = (TextView) getActivity().findViewById(R.id.dogOneName);
+        int randomDogIndex = (int)(Math.random() * dogList.size());
+        Dog cardOneDog = (Dog) dogList.get(randomDogIndex);
+        dogName.setText(cardOneDog.getName());
     }
 
 
@@ -143,6 +148,8 @@ public class HomeFragment extends Fragment {
                             View adopter = inflater.inflate(R.layout.fragment_home_adopter, container, false);
                             placeholder.removeAllViews();
                             placeholder.addView(adopter);
+
+                            setCardOneInfo();
                         }
 
                     }
