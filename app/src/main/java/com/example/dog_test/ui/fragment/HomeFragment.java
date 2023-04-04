@@ -55,7 +55,9 @@ public class HomeFragment extends Fragment {
         dogList = new ArrayList();
         setUserView();
         getDogInfo();
+        setCardOneInfo();
 
+        System.out.println("DOG LIST SIZE: " + dogList.size());
         return placeholder;
     }
 
@@ -108,6 +110,13 @@ public class HomeFragment extends Fragment {
         System.out.println("DOG NAME: " + newDog.getName());
 
         dogList.add(newDog);
+    }
+
+    public void setCardOneInfo(){
+        TextView dogName = (TextView) getActivity().findViewById(R.id.dogOneName);
+        int randomDogIndex = (int)(Math.random() * dogList.size());
+        Dog cardOneDog = (Dog) dogList.get(randomDogIndex);
+        dogName.setText(cardOneDog.getName());
     }
 
 
