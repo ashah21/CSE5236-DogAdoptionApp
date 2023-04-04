@@ -63,24 +63,10 @@ public class HomeFragment extends Fragment {
     public void getDogInfo() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         dogRef = firebaseDatabase.getReference("dogs");
-       /* dogRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Query dogs = dogRef.orderByKey();
-                dogs.startAt(0);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });*/
 
         dogRef.orderByKey().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                System.out.println("NEW KEY!!!!: " + snapshot.getKey());
                 addNewDog(snapshot);
             }
 
@@ -108,9 +94,20 @@ public class HomeFragment extends Fragment {
 
     public void addNewDog(DataSnapshot snapshot) {
         Dog newDog = new Dog();
-        newDog.setName(dogRef.child(snapshot.getKey()).child("name").toString());
+
+        newDog.setName(String.valueOf(snapshot.child("name").getValue()));
+        newDog.setAge((Integer) snapshot.child("age").getValue());
+        newDog.setBreed(String.valueOf(snapshot.child("breed").getValue()));
+        newDog.setWeight((Integer) snapshot.child("weight").getValue());
+        newDog.setImageUrl(String.valueOf(snapshot.child("imageUrl").getValue()));
+        newDog.setIsAdopted((Boolean) snapshot.child("isAdopted").getValue());
+        newDog.setIsSterilized((Boolean) snapshot.child("isSterilized").getValue());
+        newDog.setIsVaccinated((Boolean) snapshot.child("isVaccinated").getValue());
+        newDog.setBio(String.valueOf(snapshot.child("bio").getValue()));
+
+        System.out.println("DOG NAME: " + newDog.getName());
+
         dogList.add(newDog);
-        System.out.println("DOG ADDED: " + snapshot.getKey());
     }
 
 
