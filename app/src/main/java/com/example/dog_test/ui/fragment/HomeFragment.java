@@ -13,13 +13,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.dog_test.R;
+import com.example.dog_test.model.Dog;
 import com.example.dog_test.ui.activity.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class HomeFragment extends Fragment {
@@ -29,7 +33,9 @@ public class HomeFragment extends Fragment {
     ViewGroup container;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    DatabaseReference userRef;
+    
+    DatabaseReference dogRef;
     String userType;
 
 
@@ -42,8 +48,29 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         placeholder = (ViewGroup) view;
         setUserView();
+        getDogInfo();
 
         return placeholder;
+    }
+
+
+    public void getDogInfo() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        dogRef = firebaseDatabase.getReference("dogs");
+        System.out.println("dkaakakakdk");
+        dogRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Query dogs = dogRef.orderByKey();
+                dogs.startAt(0);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
     }
 
 
@@ -57,8 +84,8 @@ public class HomeFragment extends Fragment {
         }
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users");
-        databaseReference.child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        userRef = firebaseDatabase.getReference("users");
+        userRef.child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful())
