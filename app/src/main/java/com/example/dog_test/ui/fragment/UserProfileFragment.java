@@ -102,12 +102,30 @@ public class UserProfileFragment extends Fragment{
 //        profileBinding = FragmentUserProfileBinding.inflate(getLayoutInflater());
         //imageUri = createUri();
         //registerPictureLauncher();
+
+        ActivityResultLauncher takePictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), new ActivityResultCallback<Bitmap>() {
+            @Override
+            public void onActivityResult(Bitmap result) {
+
+            }
+        });
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent open_camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(open_camera, REQUEST_PHOTO);
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_DENIED) {
+                    requestPermissions(new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+
+                }
+                else {
+                    // Permission already granted
+                    takePictureLauncher.launch(null);
+                }
+
+
+//                Intent open_camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(open_camera, REQUEST_PHOTO);
             }
         });
 
@@ -132,6 +150,7 @@ public class UserProfileFragment extends Fragment{
 
         return view;
     }
+
 
 
 
