@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -74,6 +75,7 @@ public class UserProfileFragment extends Fragment{
     private static final int CAMERA_PERMISSION_CODE = 1;
 
     private static final int REQUEST_PHOTO= 2;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
 
 
     @Nullable
@@ -103,8 +105,6 @@ public class UserProfileFragment extends Fragment{
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //checkCameraPermissionAndOpenCamera();
-//                takePictureIntent();
 
                 Intent open_camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(open_camera, REQUEST_PHOTO);
@@ -133,24 +133,7 @@ public class UserProfileFragment extends Fragment{
         return view;
     }
 
-    private void takePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Handle error
-            }
-            if (photoFile != null) {
-                imageUri = FileProvider.getUriForFile(getActivity(),
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
-    }
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -164,8 +147,6 @@ public class UserProfileFragment extends Fragment{
         );
         return imageFile;
     }
-
-
 
 
     private void uploadImageToFirebase(Uri imageUri) {
@@ -230,17 +211,7 @@ public class UserProfileFragment extends Fragment{
                 .into(profilePic);
     }
 
-    private void getImageInImageView() {
 
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imagePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        profilePic.setImageBitmap(bitmap);
-
-    }
 
     private void uploadImage(){
 
@@ -275,43 +246,6 @@ public class UserProfileFragment extends Fragment{
         FirebaseDatabase.getInstance().getReference("users/"+FirebaseAuth.getInstance().getCurrentUser().getUid() + "/userImage").setValue(url);
     }
 
-    private Uri createUri(){
-        File imageFile = new File(getActivity().getApplicationContext().getFilesDir(), "camera_photo.jpg");
-        return FileProvider.getUriForFile(
-                getActivity().getApplicationContext(),
-                "com.example.camerapermission.fileProvider",
-                imageFile
-        );
-    }
-
-    private void registerPictureLauncher(){
-        takePictureLauncher = registerForActivityResult(
-                new ActivityResultContracts.TakePicture(),
-                new ActivityResultCallback<Boolean>(){
-                    @Override
-                    public void onActivityResult(Boolean result){
-                        try {
-                            if(result){
-                                profileBinding.userProfile.setImageURI(null);
-                                profileBinding.userProfile.setImageURI(imageUri);
-                            }
-                        }catch (Exception exception){
-                            exception.getStackTrace();
-                        }
-                    }
-                }
-        );
-    }
-
-    private void checkCameraPermissionAndOpenCamera(){
-        if(ActivityCompat.checkSelfPermission(getActivity().getApplication(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-        }else{
-            takePictureLauncher.launch(imageUri);
-        }
-
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults){
@@ -324,6 +258,9 @@ public class UserProfileFragment extends Fragment{
             }
         }
     }
+
+
+
 
 
 }
