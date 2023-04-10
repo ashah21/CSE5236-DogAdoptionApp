@@ -73,6 +73,8 @@ public class UserProfileFragment extends Fragment{
     private Uri imageUri;
     private static final int CAMERA_PERMISSION_CODE = 1;
 
+    private static final int REQUEST_PHOTO= 2;
+
 
     @Nullable
     @Override
@@ -105,7 +107,7 @@ public class UserProfileFragment extends Fragment{
 //                takePictureIntent();
 
                 Intent open_camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(open_camera, 0);
+                startActivityForResult(open_camera, REQUEST_PHOTO);
             }
         });
 
@@ -212,6 +214,9 @@ public class UserProfileFragment extends Fragment{
                     throw new RuntimeException(e);
                 }
                 profilePic.setImageBitmap(bitmapImage);
+            }else if(requestCode == REQUEST_PHOTO){
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                // chatgpt test
             }
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             uploadImageToFirebase(imageUri);
