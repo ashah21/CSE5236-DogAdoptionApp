@@ -95,20 +95,11 @@ public class UserProfileFragment extends Fragment{
 //        uploadImage.setOnClickListener(this);
 
         btnCamera = (Button) view.findViewById(R.id.btn_camera);
-//        camera.setOnClickListener(this);
-
-//        user = FirebaseAuth.getInstance().getCurrentUser();
 
         profilePic = view.findViewById(R.id.user_profile);
         progressBar = view.findViewById(R.id.progressBar);
 
-//        storage = FirebaseStorage.getInstance();
-//        storageReference = storage.getReference();
 
-        // camera
-//        profileBinding = FragmentUserProfileBinding.inflate(getLayoutInflater());
-        //imageUri = createUri();
-        //registerPictureLauncher();
 
         MutableLiveData<Bitmap> mBitmapLiveData = new MutableLiveData<>();
 
@@ -141,17 +132,8 @@ public class UserProfileFragment extends Fragment{
         ActivityResultLauncher takePictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), new ActivityResultCallback<Bitmap>() {
             @Override
             public void onActivityResult(Bitmap result) {
-//                profilePic.setImageBitmap(result);
-//                Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                cameraIntent.setType("image/*");
-//                Bitmap bitmap = null;
-//                try {
-//                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),
-//                            cameraIntent.getData());
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                profilePic.setImageBitmap(bitmap);
+//
+                profilePic.setImageBitmap(result);
                 Log.i("Result", result.toString());
             }
         });
@@ -168,7 +150,9 @@ public class UserProfileFragment extends Fragment{
                 else {
                     // Permission already granted
 //                    takePictureLauncher.launch(null);
-                    mCapturePhotoLaunch.launch(null);
+                    Intent intent = new Intent((MediaStore.ACTION_IMAGE_CAPTURE));
+//                    mCapturePhotoLaunch.launch(null);
+                    takePictureLauncher.launch(intent);
                 }
 
 
