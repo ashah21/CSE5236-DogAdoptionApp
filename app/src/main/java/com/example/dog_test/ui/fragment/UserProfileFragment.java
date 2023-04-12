@@ -129,14 +129,25 @@ public class UserProfileFragment extends Fragment{
 
         //////
 
-        ActivityResultLauncher takePictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), new ActivityResultCallback<Bitmap>() {
-            @Override
-            public void onActivityResult(Bitmap result) {
-//
-                profilePic.setImageBitmap(result);
-                Log.i("Result", result.toString());
-            }
+        ActivityResultLauncher takePictureLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result->{
+
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Bundle extras = result.getData().getExtras();
+                        Bitmap bitmap = (Bitmap) extras.get("data");
+                        profilePic.setImageBitmap(bitmap);
+                    }
+
         });
+
+//        ActivityResultLauncher takePictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), new ActivityResultCallback<Bitmap>() {
+//            @Override
+//            public void onActivityResult(Bitmap result) {
+////
+//                profilePic.setImageBitmap(result);
+//                Log.i("Result", result.toString());
+//            }
+//        });
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
