@@ -131,7 +131,7 @@ public class UserProfileFragment extends Fragment{
                         Runnable runnable = () -> {
                                 Bitmap bitmap = uriToBitmap(imageUri);
                                 mBitmapLiveData.postValue(bitmap);
-                                profilePic.setImageURI(imageUri);
+                                profilePic.setImageBitmap(bitmap);
                         };
                         runnable.run();
                 });
