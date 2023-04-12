@@ -2,6 +2,7 @@ package com.example.dog_test.model;
 
 public class Dog {
 
+    public String dogId;
     public String name;
 
     public String breed;
@@ -24,6 +25,13 @@ public class Dog {
 
     public Dog() {
 
+    }
+
+    public String getId() {
+        return dogId;
+    }
+    public void setId(String id) {
+        dogId = id;
     }
 
     public String getName() {
