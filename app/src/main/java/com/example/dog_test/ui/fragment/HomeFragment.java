@@ -132,7 +132,6 @@ public class HomeFragment extends Fragment {
 
         yesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("YES BUTTON CLICKED");
 
                 if(dogList.contains(cardDog))
                 {
@@ -146,7 +145,6 @@ public class HomeFragment extends Fragment {
                 }
                 else
                 {
-                    System.out.println("NO MORE DOGS");
                     getDogInfo();
                     reset = true;
                 }
@@ -155,7 +153,6 @@ public class HomeFragment extends Fragment {
 
         noButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("NO BUTTON CLICKED");
 
                 if(dogList.contains(cardDog))
                 {
@@ -168,7 +165,6 @@ public class HomeFragment extends Fragment {
                 }
                 else
                 {
-                    System.out.println("NO MORE DOGS");
                     getDogInfo();
                     reset = true;
                 }
@@ -181,7 +177,9 @@ public class HomeFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         dogRef = firebaseDatabase.getReference("dogs");
 
-        dogRef.orderByKey().addChildEventListener(new ChildEventListener() {
+        int randomDogAge = (int) (Math.random() * 2) + 1;
+
+        dogRef.orderByChild("age").startAt(randomDogAge).limitToFirst(5).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 addNewDog(snapshot);
