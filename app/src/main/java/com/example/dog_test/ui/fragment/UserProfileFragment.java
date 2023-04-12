@@ -22,8 +22,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +56,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -106,6 +110,33 @@ public class UserProfileFragment extends Fragment{
         //imageUri = createUri();
         //registerPictureLauncher();
 
+        MutableLiveData<Bitmap> mBitmapLiveData = new MutableLiveData<>();
+
+
+        //  TIC-TAC-TOE REFERENCE CODE
+        ActivityResultLauncher<Void> mCapturePhotoLaunch = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(),
+                result -> {
+                        Runnable runnable = () -> {
+                            mBitmapLiveData.postValue(result);
+                            Bitmap bitmap = mBitmapLiveData.getValue();
+                            profilePic.setImageBitmap(bitmap);
+                        };
+
+        });
+
+        ActivityResultLauncher<String> mPickImageResult = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                result -> {
+                        final String uriString = result.toString();
+                        final Uri imageUri = Uri.parse(uriString);
+                        Runnable runnable = () -> {
+                                Bitmap bitmap = uriToBitmap(imageUri);
+                                mBitmapLiveData.postValue(bitmap);
+                                profilePic.setImageURI(imageUri);
+                        };
+                        runnable.run();
+                });
+
+        //////
 
         ActivityResultLauncher takePictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), new ActivityResultCallback<Bitmap>() {
             @Override
@@ -136,7 +167,8 @@ public class UserProfileFragment extends Fragment{
                 }
                 else {
                     // Permission already granted
-                    takePictureLauncher.launch(null);
+//                    takePictureLauncher.launch(null);
+                    mCapturePhotoLaunch.launch(null);
                 }
 
 
@@ -149,11 +181,12 @@ public class UserProfileFragment extends Fragment{
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                cameraIntent.setType("image/*");
-                if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(cameraIntent, 1000);
-                }
+//                Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                cameraIntent.setType("image/*");
+//                if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+//                    startActivityForResult(cameraIntent, 1000);
+//                }
+                mPickImageResult.launch("image/*");
             }
         });
 
@@ -167,6 +200,21 @@ public class UserProfileFragment extends Fragment{
         return view;
     }
 
+    private Bitmap uriToBitmap(Uri selectedFileUri){
+        Bitmap image = null;
+        try {
+            Activity activity = requireActivity();
+            ParcelFileDescriptor parcelFileDescriptor = activity.getContentResolver().openFileDescriptor(selectedFileUri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return image;
+    }
 
 
 
