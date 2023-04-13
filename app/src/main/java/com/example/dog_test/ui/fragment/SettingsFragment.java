@@ -19,6 +19,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     Button deleteAccount;
 
+    Button userProfile;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,6 +32,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         deleteAccount = (Button) view.findViewById(R.id.btn_delete_account);
         deleteAccount.setOnClickListener(this);
+
+        userProfile = (Button) view.findViewById(R.id.btn_user_profile);
+        userProfile.setOnClickListener(this);
 
         return view;
     }
@@ -44,6 +49,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_delete_account:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new DeleteAccountFragment()).commit();
+                break;
+            case R.id.btn_user_profile:
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new UserProfileFragment()).commit();
                 break;
         }
     }

@@ -14,13 +14,17 @@ public class User {
 
     public List<String> dogIds;
 
-    public User(String name, String email, String password, boolean isShelter, String userId){
+    public String userImage;
+
+    public User(String name, String email, String password, boolean isShelter, String userId, String userImage){
         this.name = name;
         this.email = email;
         this.password = password;
         this.isShelter = isShelter;
         this.userId = userId;
         this.dogIds = new ArrayList<>();
+        this.userId = userId;
+        this.userImage = userImage;
     }
 
     public String getName() {
@@ -37,5 +41,13 @@ public class User {
 
     public void removeDog(String dogId) {
         this.dogIds.remove(String.valueOf(dogId));
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 }
