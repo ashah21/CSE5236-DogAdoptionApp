@@ -36,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progressBar;
     TextView textView;
 
+    String testMsg;
+
     private void isUser(){
         // get the email and password user enters
         String userEnteredEmail = editTextEmail.getText().toString();
@@ -157,11 +159,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(email)){
                     Toast.makeText(LoginActivity.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    testMsg = "Invalid login";
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)){
                     Toast.makeText(LoginActivity.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    testMsg = "Invalid login";
                     return;
                 }
 
@@ -172,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-
+                                    testMsg = "Valid Login";
 
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                     String userEnteredEmail = editTextEmail.getText().toString();

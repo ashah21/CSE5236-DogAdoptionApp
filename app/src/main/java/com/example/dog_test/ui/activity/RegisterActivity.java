@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     TextInputEditText editTextEmail, editTextPassword, mUserName;
     Button buttonReg;
+    CheckBox isShelterBox;
     private FirebaseAuth mAuth;
     private FirebaseDatabase rootNode;
     private DatabaseReference databaseReference;
@@ -69,6 +71,8 @@ public class RegisterActivity extends AppCompatActivity {
         buttonReg = findViewById(R.id.btn_register);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
+        isShelterBox = findViewById(R.id.isShelterBox);
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,8 +119,10 @@ public class RegisterActivity extends AppCompatActivity {
                                     String name = mUserName.getText().toString();
                                     String passwordTest = editTextPassword.getText().toString();
                                     String uid = mAuth.getCurrentUser().getUid();
+                                    String userImage = "";
 
-                                    User users = new User(name, emailTest, passwordTest, uid);
+                                    User users = new User(name, emailTest, passwordTest,
+                                            isShelterBox.isChecked(), uid, "");
                                     insertDb(uid, users);
 
                                 } else {

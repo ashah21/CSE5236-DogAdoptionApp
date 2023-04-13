@@ -45,4 +45,18 @@
     <string name="new_password">New Password</string>
     <string name="confirm_password">Confirm New Password</string>
     <string name="submit">Submit</string>
+    <string name="add_new_dog">Add New Dog</string>
+    <string name="add_dog">Add Dog</string>
+    <string name="dog_name">Name</string>
+    <string name="dog_breed">Breed</string>
+    <string name="dog_age">Age</string>
+    <string name="dog_weight">Weight</string>
+    <string name="dog_vaccinated">Vaccinated?</string>
+    <string name="dog_sterilized">Sterilized?</string>
+    <string name="dog_bio">Bio</string>
+    <string name="add_picture">Add Picture</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
