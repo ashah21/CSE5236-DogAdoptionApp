@@ -104,30 +104,7 @@ public class UserProfileFragment extends Fragment{
         MutableLiveData<Bitmap> mBitmapLiveData = new MutableLiveData<>();
 
 
-        //  TIC-TAC-TOE REFERENCE CODE
-        ActivityResultLauncher<Void> mCapturePhotoLaunch = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(),
-                result -> {
-                        Runnable runnable = () -> {
-                            mBitmapLiveData.postValue(result);
-                            Bitmap bitmap = mBitmapLiveData.getValue();
-                            profilePic.setImageBitmap(bitmap);
-                        };
 
-        });
-
-        ActivityResultLauncher<String> mPickImageResult = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                result -> {
-                        final String uriString = result.toString();
-                        final Uri imageUri = Uri.parse(uriString);
-                        Runnable runnable = () -> {
-                                Bitmap bitmap = uriToBitmap(imageUri);
-                                mBitmapLiveData.postValue(bitmap);
-                                profilePic.setImageBitmap(bitmap);
-                        };
-                        runnable.run();
-                });
-
-        //////
 
         ActivityResultLauncher takePictureLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result->{
@@ -176,12 +153,11 @@ public class UserProfileFragment extends Fragment{
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                cameraIntent.setType("image/*");
-//                if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-//                    startActivityForResult(cameraIntent, 1000);
-//                }
-                mPickImageResult.launch("image/*");
+                Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                cameraIntent.setType("image/*");
+                if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(cameraIntent, 1000);
+                }
             }
         });
 
