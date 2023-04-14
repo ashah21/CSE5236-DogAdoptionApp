@@ -6,11 +6,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.view.MenuItem;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
 
     TextView toolbarTitle;
+
+    private HomeFragment homeFragment;
+
+    public HomeFragment getHomeFragmentForTest() {
+        recoverFragmentHome();
+        return homeFragment;
+    }
+
+    private void recoverFragmentHome() {
+        if (homeFragment == null) {
+            FragmentManager fm = getSupportFragmentManager();
+            if (fm.getFragments().size() == 0) {
+                homeFragment = new HomeFragment();
+            }
+            else {
+                for (Fragment fragment: fm.getFragments()) {
+                    if (fragment instanceof HomeFragment) {
+                        homeFragment = (HomeFragment) fragment;
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
