@@ -35,6 +35,14 @@
             android:exported="true"
             android:theme="@style/NoActionBar"></activity>
 
+        <activity
+            android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
+            android:label="InstrumentationActivityInvoker$BootstrapActivity" />
+
+        <activity
+            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity"
+            android:label="InstrumentationActivityInvoker$BootstrapActivity" />
+
         <provider
             android:authorities="com.example.camerapermission.fileProvider"
             android:name="androidx.core.content.FileProvider"
