@@ -60,11 +60,11 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         placeholder = (ViewGroup) view;
-        setUserView();
 
         dogList = new ArrayList();
         reset = false;
         getDogInfo();
+        setUserView();
 
         return placeholder;
     }
