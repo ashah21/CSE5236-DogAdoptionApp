@@ -58,7 +58,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="*To select an image for user profile, click the icon below and then click upload image"
+        android:text="*To select an image for user profile, click the icon above and then click upload image"
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="13sp"
